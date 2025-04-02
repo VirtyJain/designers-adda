@@ -15,10 +15,18 @@ class BaseClass(AbstractUser):
     age = models.IntegerField(verbose_name="Age")
     address = models.CharField(max_length=100, verbose_name="Address")
     contact_no = models.IntegerField(verbose_name="Contact Number")
-    image = models.ImageField(upload_to='customer/', verbose_name="Profile", null=True, blank=True)
+    image = models.ImageField(upload_to='images/', verbose_name="Profile", null=True, blank=True)
 
     class Meta:
         abstract = True
-        
-# class Customer(BaseClass):
-#     pass
+
+
+class Customer(BaseClass):
+    pass
+
+class Login(models.Model):
+    username = models.CharField(max_length=20, verbose_name="Username")
+    password = models.CharField(max_length=20, verbose_name="Password")
+
+    def __str__(self):
+        return self.username

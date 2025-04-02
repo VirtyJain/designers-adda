@@ -1,0 +1,51 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*$py.class
+
+# Virtual environment
+venv/
+env/
+*.venv
+*.env
+
+# Django specific
+*.log
+*.pot
+*.sqlite3
+db.sqlite3
+
+# Media and Static files
+/media/
+staticfiles/
+static/
+
+# Secret key and environment variables
+.env
+config/settings_local.py  # If you have local settings
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Deployment files
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
