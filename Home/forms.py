@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from .models import Customer, Login
+from .models import Customer
 
 
 class CustomerForm(UserCreationForm):
@@ -25,12 +25,12 @@ class CustomerForm(UserCreationForm):
         }
         
         
-class LoginForm(AuthenticationForm):
-    class Meta:
-        model = Login
-        fields = ['username', 'password']
+# class LoginForm(forms.ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = ['username', 'password']
         
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your username'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
-        }
+#         widgets = {
+#             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your username'}),
+#             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
+#         }

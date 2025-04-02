@@ -11,10 +11,10 @@ class BaseClass(AbstractUser):
     A base user model for all the user's personal details
     """
     gender = models.CharField(max_length=10, choices=GENDERS_CHOICES, default='M', verbose_name="Gender")
-    date_of_birth = models.DateField(verbose_name="Date of Birth")
-    age = models.IntegerField(verbose_name="Age")
-    address = models.CharField(max_length=100, verbose_name="Address")
-    contact_no = models.IntegerField(verbose_name="Contact Number")
+    date_of_birth = models.DateField(verbose_name="Date of Birth", null=True)
+    age = models.IntegerField(verbose_name="Age", null=True)
+    address = models.CharField(max_length=100, verbose_name="Address", null=True)
+    contact_no = models.IntegerField(verbose_name="Contact Number", null=True)
     image = models.ImageField(upload_to='images/', verbose_name="Profile", null=True, blank=True)
 
     class Meta:
@@ -23,10 +23,3 @@ class BaseClass(AbstractUser):
 
 class Customer(BaseClass):
     pass
-
-class Login(models.Model):
-    username = models.CharField(max_length=20, verbose_name="Username")
-    password = models.CharField(max_length=20, verbose_name="Password")
-
-    def __str__(self):
-        return self.username

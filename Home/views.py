@@ -3,7 +3,9 @@ from django.views import generic
 # from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
-from .forms import CustomerForm, LoginForm
+from .forms import CustomerForm
+from django.contrib.auth.forms import AuthenticationForm
+
 
 # Create your views here.
 
@@ -26,7 +28,7 @@ class CustomerFormView(generic.FormView):
 
 class UserLoginView(LoginView):
     template_name = 'home/login.html'
-    form_class = LoginForm
+    form_class = AuthenticationForm
 
     def get_success_url(self):
         return reverse_lazy('home_page')
