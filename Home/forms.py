@@ -1,13 +1,11 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from .models import Customer
+from .models import CustomUser
 
 
 class CustomerForm(UserCreationForm):
     class Meta:
-        model = Customer
+        model = CustomUser
         exclude = ["is_active", "is_staff", "last_login", "is_superuser", "groups", "user_permissions", "password"]
         
         widgets = {
@@ -20,17 +18,5 @@ class CustomerForm(UserCreationForm):
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your address'}),
             'contact_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your contact number'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
-            # 'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your username'}),
         }
-        
-        
-# class LoginForm(forms.ModelForm):
-#     class Meta:
-#         model = Customer
-#         fields = ['username', 'password']
-        
-#         widgets = {
-#             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your username'}),
-#             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
-#         }
