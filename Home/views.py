@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views import generic
-# from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from .forms import CustomerForm
@@ -15,6 +14,10 @@ def home_page(request):
 
 def register(request):
     return render(request, template_name="home/register.html")
+
+
+def about(request):
+    return render(request, template_name="home/about.html")
 
 
 class CustomerFormView(generic.FormView):

@@ -6,7 +6,6 @@ class ProductDetailsForm(forms.ModelForm):
     """
     Form to handle product details for designers.
     """
-    # form1 = forms.FileField(label='Upload Image', required=False, ) 
     class Meta:
         model = ProductDetailsModel
         # fields = "__all__"
