@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - Designer’s Adda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #c5f3f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(11, 243, 243, 0.692);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        nav a {
+            margin-left: 1.2rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #ff4081;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            background: #ff4081;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #222;
+        }
+
+        .features, .categories {
+            margin-top: 40px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .footer {
+            background: rgba(11, 243, 243, 0.692);
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h2>Designer’s Adda</h2>
+        <nav>
+            <a href="/home/">Home</a>
+            <a href="#designers">Designers</a>
+            <a href="#products">Shop</a>
+            <a href="/about/">About Us</a>
+            <a href="/contact/">Contact</a>
+            <a href="/login/">Login</a>
+            <a href="/user_register/">Register</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>About Designer’s Adda</h1>
+        <p>Welcome to Designer’s Adda – a vibrant hub for creativity, fashion, and connection between talented designers and style-savvy customers. <br> We believe fashion is not just about wearing clothes, it's about expressing identity, culture, and creativity. That’s why Designer’s Adda brings together the finest designer talents and enthusiastic shoppers in one colorful space.
+        </p>
+
+        <div class="features">
+            <h2>✨ What we Offer</h2>
+            <ul>
+                <li>Direct Designer-Customer Interaction: Designer’s Adda allows real-time interaction between designers and customers. Whether you’re looking for a custom-made outfit or want to discuss style preferences, you can connect directly with the creator behind the look.</li>
+                <li>A Platform for Designers to Shine: We offer a dedicated space for fashion designers to showcase their Exclusive clothing collections, Unique product designs, Creative skills and personal brand. It’s the perfect place to build your reputation and reach new fashion-forward audiences.</li>
+                <li>Shop Trendy Designer Pieces: Customers can explore and purchase the latest trendy outfits for Weddings & Engagements, Festivals (like Diwali, Eid, Navratri), Parties, Anniversaries & Celebrations</li>
+                <li>All Trending Styles Under One Roof: From traditional ethnic wear to modern fusion looks, Designer’s Adda curates the trendiest clothing for every occasion, helping customers stay in style all year long.</li>
+            </ul>
+        </div>
+
+        <div class="categories">
+            <h2>👗 Dress Categories Available</h2>
+            <ul>
+                <li>Women’s Ethnic Wear – Sarees, Lehengas, Kurtis</li>
+                <li>Men’s Ethnic Wear – Sherwanis, Kurta Sets</li>
+                <li>Casual Wear – Tops, Jeans, T-Shirts</li>
+                <li>Western Dresses – Gowns, Skirts, Partywear</li>
+                <li>Unisex Accessories – Scarves, Bags, Footwear</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Designer’s Adda | Made with ❤️ for fashion lovers</p>
+        <p>Contact: support@designersadda.in | Follow us on Instagram</p>
+        <p>Email: designers_adda@gmail.com</p>
+        <p>Instagram: designers_adda</p>
+        <p>Facebook: designers_adda</p>
+        <p>Twitter: @designers_adda</p>
+    </footer>
+
+    <script>
+        function toggleFAQ(elem) {
+            const answer = elem.nextElementSibling;
+            answer.style.display = answer.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</body>
+</html>

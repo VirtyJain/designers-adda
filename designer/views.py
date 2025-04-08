@@ -30,5 +30,5 @@ class DesignerDetailsView(generic.DetailView):
     model = DesignerRegister
     context_object_name = 'designer'
 
-def home_view(request):
-    return render(request, 'designer/home.html')
+def designers_home_view(request):
+    return render(request, 'designer/designers_home.html')
