@@ -14,10 +14,10 @@ class DesignerRegisterForm(forms.ModelForm):
         
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your bio'}),
-            'certificate': forms.FileInput(attrs={'class': 'form-control'}),
+            # 'certificate': forms.FileInput(attrs={'class': 'form-control'}),
             'experience': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your years of experience'}),
             'skills': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your skills'}),
-            'portfolio': forms.FileInput(attrs={'class': 'form-control'}),
+            # 'portfolio': forms.FileInput(attrs={'class': 'form-control'}),
             
         }
         

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views import generic
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView
-from .forms import CustomerForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
+from .forms import CustomerForm
+from .models import CustomUser
 
 # Create your views here.
 
@@ -17,6 +18,10 @@ def register(request):
 
 def about(request):
     return render(request, template_name="home/about.html")
+
+
+def logout_confirmation(request):
+    return render(request, template_name="home/logout.html")
 
 
 class CustomerFormView(generic.FormView):
@@ -34,3 +39,13 @@ class UserLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('user_home_page')
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('home_page')
+    
+
+class UserDeleteView(generic.DeleteView):
+    model = CustomUser
+    template_name = "home/delete.html"
+    success_url = reverse_lazy('home_page')

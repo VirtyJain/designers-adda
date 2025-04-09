@@ -1,45 +1,157 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Designer's Details</title>
+    <title>Designer Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-image: url('{% static 'images/coloured_background.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+        .profile-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+    
+        .profile-box:hover {
+            transform: translateY(-5px);
+        }
+    
+        .profile-box h2 {
+            color: #00796b;
+            margin-bottom: 1.2rem;
+        }
+    
+        .profile-image {
+            margin-bottom: 1rem;
+        }
+    
+        .profile-image img {
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00796b50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    
+        .profile-info {
+            text-align: left;
+            padding: 0 1rem;
+        }
+    
+        .profile-info p {
+            font-size: 1rem;
+            margin: 0.6rem 0;
+            display: flex;
+            align-items: center;
+        }
+    
+        .profile-info p strong {
+            width: 150px;
+            color: #333;
+        }
+    
+        .profile-info p span {
+            color: #555;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-group a {
+            flex: 1 1 30%;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .update-btn {
+            background-color: #00acc1;
+        }
+
+        .delete-btn {
+            background-color: #e53935;
+        }
+
+        .btn-group a:hover {
+            opacity: 0.9;
+        }
+    
+        @media (max-width: 600px) {
+            .profile-info p {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .profile-info p strong {
+                width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h3>{{object.first_name}}'s Details:</h3>
-        <table bordercolor="Black" Border=2 cellspacing="5" cellpadding="10">
-            
-            <tr>
-                <th>Photo: </th>
-                <td><img src="{{object.image.url}}" alt="Virty Jain" height="100"></td>
-            </tr> 
-            <tr> 
-                <th>Name: </th>
-                <td>{{ object.first_name }} {{ object.last_name }}</td>
-            </tr>
-            <tr>
-                <th>Age: </th>
-                <td>{{ object.age }}</td>
-            </tr>
-            <tr> 
-                <th>Date of birth: </th>
-                <td>{{ object.date_of_birth }}</td>
-            </tr>
-            <tr> 
-                <th>Address: </th>
-                <td>{{ object.address }}</td>
-            </tr>
-            <tr> 
-                <th>Contact Number: </th>
-                <td>{{ object.contact_no }}</td>
-            </tr>
-            <tr> 
-                <th>Email: </th>
-                <td>{{ object.email }}</td>
-            </tr>
-        </table>
-        <br>
+    <div class="profile-box">
+        <h2>Welcome, {{ user.username }}</h2>
+    
+        <div class="profile-image">
+            <img src="{{ user.image.url }}" alt="{{ user.first_name }}" height=100 width=100>
+        </div>
+        
+        <p>{{user.first_name}} {{user.last_name}}</p>
+
+        <div class="profile-info">
+            <h2>Personal Details</h2>
+            <p><strong>First Name:</strong> <span>{{ user.first_name }}</span></p>
+            <p><strong>Last Name:</strong> <span>{{ user.last_name }}</span></p>
+            <p><strong>Bio:</strong> <span>  {{ designer.bio }}</span></p>
+            <p><strong>Gender:</strong> <span>{{ user.gender }}</span></p>
+            <p><strong>Date of Birth:</strong> <span>{{ user.date_of_birth }}</span></p>
+            <p><strong>Age:</strong> <span>{{ user.age }}</span></p>
+            <p><strong>Address:</strong> <span>{{ user.address }}</span></p>
+            <p><strong>Contact Number:</strong> <span>{{ user.contact_no }}</span></p>
+            <p><strong>Email:</strong> <span>{{ user.email }}</span></p>
+            <p><strong>Experience:</strong> <span>{{ designer.experience }}</span></p>
+            <p><strong>Specialization:</strong> <span>{{ designer.skills }}</span></p>
+        </div>
+        {% for i in designer.designer_business_details.all %}
+            <div class="profile-info">
+                <h2>Business 1</h2>
+                <p><strong>Boutique Name:</strong> <span>{{ i.business_name }}</span></p>
+                <p><strong>Address:</strong> <span>{{ i.business_address }}</span></p>
+                <p><strong>Contact number:</strong> <span>{{ i.business_contact_no }}</span></p>
+                <p><strong>Email:</strong> <span>{{ i.business_email }}</span></p>
+                <p><strong>Description:</strong> <span>{{ i.business_description }}</span></p>
+            </div>
+        {% endfor %}
+        <div class="btn-group">
+            <a href="/designer/update/{{user.id}}/" class="update-btn">Update Profile</a>
+            <a href="/delete/{{user.id}}/" class="delete-btn">Delete Account</a>
+        </div>
     </div>
 </body>
 </html>
