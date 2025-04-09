@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Home',
     'designer',
     'products',
+    'user',
     
 ]
 

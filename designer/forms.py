@@ -10,6 +10,7 @@ class DesignerRegisterForm(forms.ModelForm):
     class Meta:
         model = DesignerRegister
         fields = "__all__"
+        exclude = ['user', 'is_designer', 'is_business', 'is_verified', 'is_active', 'is_deleted']
         
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your bio'}),
@@ -29,6 +30,7 @@ class DesignerBusinessDetailsForm(forms.ModelForm):
     class Meta:
         model = DesignerBusinessDetails
         fields = "__all__"
+        exclude = ['designer']
         
         widgets = {
             'business_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your business name'}),

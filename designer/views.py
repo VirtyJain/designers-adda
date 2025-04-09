@@ -5,6 +5,10 @@ from .models import DesignerRegister
 # Create your views here.
 
 
+def about(request):
+    return render(request, template_name="designer/about.html")
+
+
 class DesignerFormView(generic.FormView):
     form_class = DesignerRegisterForm
     template_name = 'designer/designer_register.html'

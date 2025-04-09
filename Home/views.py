@@ -5,7 +5,6 @@ from django.contrib.auth.views import LoginView
 from .forms import CustomerForm
 from django.contrib.auth.forms import AuthenticationForm
 
-
 # Create your views here.
 
 def home_page(request):
@@ -34,4 +33,4 @@ class UserLoginView(LoginView):
     form_class = AuthenticationForm
 
     def get_success_url(self):
-        return reverse_lazy('home_page')
+        return reverse_lazy('user_home_page')
