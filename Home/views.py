@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 from .forms import CustomerForm
 from .models import CustomUser
 
@@ -36,10 +37,18 @@ class CustomerFormView(generic.FormView):
 class UserLoginView(LoginView):
     template_name = 'home/login.html'
     form_class = AuthenticationForm
+    
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
 
-    def get_success_url(self):
-        return reverse_lazy('user_home_page')
-
+        if user.user_type == 'Customer':
+            return redirect('user_home_page')
+        elif user.user_type == 'Designer':
+            return redirect('designer_home_page')
+        elif user.user_type == 'Delivery_boy':
+            return redirect('delivery_boy_home')
+   
 
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('home_page')

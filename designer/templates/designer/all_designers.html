@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About</title>
+    <title>All Designers</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,8 @@
         }
 
         body {
-            background-color: #c5f3f7;
+            background-image : url('{% static 'images/coloured_background.jpg' %}');
+            background-size: cover; 
             color: #333;
             line-height: 1.6;
         }
@@ -50,15 +51,6 @@
             color: #ff4081;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #fff;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
         .btn {
             background: #ff4081;
             color: white;
@@ -80,17 +72,35 @@
             color: #222;
         }
 
-        .features, .categories {
-            margin-top: 40px;
+        .product-grid,
+        .testimonial-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
-        ul {
-            padding-left: 20px;
+        .designer-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr); /* ← Fix here */
+        }     
+
+        .card {
+            padding: 1.5rem;
+            border-radius: 16px;
+            transition: 0.3s;
         }
 
-        li {
-            margin-bottom: 10px;
-            font-weight: 500;
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            height: 350px;
+            object-fit: cover;
+            margin-bottom: 1rem;
         }
 
         .footer {
@@ -112,37 +122,29 @@
             <a href="/products/details/">Your Products</a>
             <a href="/products/form/">Upload Products</a>
             <a href="/designer/about/">About Us</a>
-            <a href="/logout/">Log-out</a>
-            <a href="/designer/profile/">Profile</a>
+            <a href="/logout_confirm/">Log-out</a>
+            <a href="/designer/profile/{{ user.id }}">Profile</a>
         </nav>
     </header>
 
-    <div class="container">
-        <h1>About Designer’s Adda</h1>
-        <p>Welcome to Designer’s Adda – a vibrant hub for creativity, fashion, and connection between talented designers and style-savvy customers. <br> We believe fashion is not just about wearing clothes, it's about expressing identity, culture, and creativity. That’s why Designer’s Adda brings together the finest designer talents and enthusiastic shoppers in one colorful space.
-        </p>
-
-        <div class="features">
-            <h2>✨ What we Offer</h2>
-            <ul>
-                <li>Direct Designer-Customer Interaction: Designer’s Adda allows real-time interaction between designers and customers. Whether you’re looking for a custom-made outfit or want to discuss style preferences, you can connect directly with the creator behind the look.</li>
-                <li>A Platform for Designers to Shine: We offer a dedicated space for fashion designers to showcase their Exclusive clothing collections, Unique product designs, Creative skills and personal brand. It’s the perfect place to build your reputation and reach new fashion-forward audiences.</li>
-                <li>Shop Trendy Designer Pieces: Customers can explore and purchase the latest trendy outfits for Weddings & Engagements, Festivals (like Diwali, Eid, Navratri), Parties, Anniversaries & Celebrations</li>
-                <li>All Trending Styles Under One Roof: From traditional ethnic wear to modern fusion looks, Designer’s Adda curates the trendiest clothing for every occasion, helping customers stay in style all year long.</li>
-            </ul>
+    <!-- Designer Showcase -->
+    <section class="section" id="designers">
+        <h2>Our Talented Designers</h2>
+        <div class="designer-grid">
+            {% for designer in designerregister_list %}
+            <div class="card glass">
+                {% if designer.user.image %}
+                <img src="{{ designer.user.image.url }}" alt="{{ designer.user.first_name }}">
+                {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="default image">
+                {% endif %}
+                <h3>{{ designer.user.first_name }} {{ designer.user.last_name }}</h3>
+                <p>{{ designer.bio }}</p>
+            </div>
+            {% endfor %}
         </div>
-
-        <div class="categories">
-            <h2>👗 Dress Categories Available</h2>
-            <ul>
-                <li>Women’s Ethnic Wear – Sarees, Lehengas, Kurtis</li>
-                <li>Men’s Ethnic Wear – Sherwanis, Kurta Sets</li>
-                <li>Casual Wear – Tops, Jeans, T-Shirts</li>
-                <li>Western Dresses – Gowns, Skirts, Partywear</li>
-                <li>Unisex Accessories – Scarves, Bags, Footwear</li>
-            </ul>
-        </div>
-    </div>
+    </section>
+    
 
     <!-- Footer -->
     <footer class="footer">

@@ -60,7 +60,7 @@ class DesignerDetailUpdateView(generic.View):
         user_form = CustomerForm(instance=business.designer.user)
         business_form = DesignerBusinessDetailsForm(instance=business)
         
-        return render(request, 'designer/designerregister_form.html', {
+        return render(request, 'designer/designer_update_form.html', {
             'business': business_form,
             'user': user_form,
             'designer':designer_form,
@@ -79,8 +79,13 @@ class DesignerDetailUpdateView(generic.View):
             
             return redirect('designer_details')
         
-        return render(request, 'designer/designerregister_form.html', {
+        return render(request, 'designer/designer_update_form.html', {
             'business': business_form,
             'user': user_form,
             'designer':designer_form,
         })
+
+
+class DesignerListView(generic.ListView):
+    template_name = "designer/all_designers.html"
+    model = DesignerRegister
