@@ -94,10 +94,6 @@
             background-color: #00acc1;
         }
 
-        .logout-btn {
-            background-color: #f9a825;
-        }
-
         .delete-btn {
             background-color: #e53935;
         }
@@ -123,7 +119,11 @@
         <h2>Welcome, {{ user.username }}</h2>
     
         <div class="profile-image">
-            <img src="{{ user.image.url }}" alt="{{ user.first_name }}" height=100 width=100>
+            {% if user.image %}
+        <img src="{{ user.image.url }}"  height="100" width="100">
+        {% else %}
+            <img src="{{ user.image }}" alt="{{ user.first_name }}" height="100" width="100">
+            {% endif %}
         </div>
     
         <div class="profile-info">
@@ -137,9 +137,8 @@
             <p><strong>Email:</strong> <span>{{ user.email }}</span></p>
         </div>
         <div class="btn-group">
-            <a href="" class="update-btn">Update Profile</a>
-            <a href="" class="logout-btn">Logout</a>
-            <a href="" class="delete-btn">Delete Account</a>
+            <a href="/user/update/{{user.id}}/" class="update-btn">Update Profile</a>
+            <a href="/delete/{{user.id}}/" class="delete-btn">Delete Account</a>
         </div>
     </div>
 </body>
