@@ -9,5 +9,6 @@ urlpatterns = [
     path('update/<int:pk>/', views.DesignerDetailUpdateView.as_view(), name='designer_detail_update'),
     path('about/', views.about, name='about'),
     path('all_designers/', views.DesignerListView.as_view(), name='display_all_designers'),
+    path('info/<int:pk>/', views.DesignerInfoView.as_view(), name='designer_info'),
     
 ]
