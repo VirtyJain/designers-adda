@@ -134,11 +134,11 @@
             {% for designer in designerregister_list %}
             <div class="card glass">
                 {% if designer.user.image %}
-                <img src="{{ designer.user.image.url }}" alt="{{ designer.user.first_name }}">
+                <img src="{{ designer.user.image.url }}">
                 {% else %}
                 <img src="{% static 'images/default_profile.png' %}" alt="default image">
                 {% endif %}
-                <h3>{{ designer.user.first_name }} {{ designer.user.last_name }}</h3>
+                <h3><a href="/designer/info/{{designer.id}}">{{ designer.user.first_name }} {{ designer.user.last_name }}</a></h3>
                 <p>{{ designer.bio }}</p>
             </div>
             {% endfor %}

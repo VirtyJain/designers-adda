@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Info</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-image: url('{% static 'images/coloured_background.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+        .product-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+    
+        .product-box:hover {
+            transform: translateY(-5px);
+        }
+    
+        .product-box h2 {
+            color: #00796b;
+            margin-bottom: 1.2rem;
+        }
+    
+        .product-image {
+            margin-bottom: 1rem;
+        }
+    
+        .product-image img {
+            height: 150px;
+            width: 150px;
+            border-radius: 10%;
+            object-fit: cover;
+            border: 4px solid #00796b50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-group a {
+            flex: 1 1 30%;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .update-btn {
+            background-color: #00acc1;
+        }
+
+        .delete-btn {
+            background-color: #e53935;
+        }
+
+        .btn-group a:hover {
+            opacity: 0.9;
+        }
+    
+        @media (max-width: 600px) {
+            .profile-info p {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .profile-info p strong {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="product-box">
+        <h2>{{ product.product_name }}</h2>
+    
+        <div class="product-image">
+            {% for image in product.product_images.all %}
+                <img src="{{ image.product_image.url }}" alt="{{ product.product_name }}" height=100 width=100>
+            {% endfor %}
+        </div>
+        <p>{{ product.product_description }}</p>        
+        <p>{{ product.product_category }}</p>
+        <p>{{ product.product_price }}</p>
+    </div>
+</body>
+</html>

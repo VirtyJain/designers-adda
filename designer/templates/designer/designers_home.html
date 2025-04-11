@@ -168,6 +168,7 @@
 
     <!-- Header -->
     <header>
+        {{user.first_name}}
         <h2>Designer’s Adda</h2>
         <nav>
             <a href="/designer/home/">Home</a>
@@ -176,7 +177,7 @@
             <a href="/products/form/">Upload Products</a>
             <a href="/designer/about/">About Us</a>
             <a href="/logout_confirm/">Log-out</a>
-            <a href="/designer/profile/{{ user.id }}">Profile</a>
+            <a href="/designer/profile/{{ user.id }}/">Profile</a>
         </nav>
     </header>
 

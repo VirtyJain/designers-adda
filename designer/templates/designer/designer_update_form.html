@@ -147,7 +147,7 @@
 <div class="mainBody">
     <div class="container">
         <div class="register-box">
-            <form method="post">   
+            <form method="post" enctype="multipart/form-data">   
                 {% csrf_token %}     
                 <h2>Personal Details</h2>
                 {% for field in user %}

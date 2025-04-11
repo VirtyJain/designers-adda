@@ -52,3 +52,9 @@ def success_url(request):
 class ProductListView(generic.ListView):
     template_name = "products/all_products.html"
     model = ProductDetailsModel
+    
+    
+class ProductInfoView(generic.DetailView):
+    model = ProductDetailsModel
+    context_object_name = 'product'
+    template_name = 'products/product_info.html'

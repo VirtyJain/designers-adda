@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from .forms import DesignerRegisterForm, DesignerBusinessDetailsForm
 from .models import DesignerRegister, DesignerBusinessDetails
-from Home.forms import CustomerForm
+from Home.forms import CustomerChangeForm
 # Create your views here.
 
 
@@ -57,7 +57,7 @@ class DesignerDetailUpdateView(generic.View):
         
         business = get_object_or_404(DesignerBusinessDetails, pk=pk)
         designer_form = DesignerRegisterForm(instance=business.designer)
-        user_form = CustomerForm(instance=business.designer.user)
+        user_form = CustomerChangeForm(instance=business.designer.user)
         business_form = DesignerBusinessDetailsForm(instance=business)
         
         return render(request, 'designer/designer_update_form.html', {
@@ -67,17 +67,18 @@ class DesignerDetailUpdateView(generic.View):
         })
         
     def post(self, request, pk):
+        
         business = get_object_or_404(DesignerBusinessDetails, pk=pk)
-        designer_form = DesignerRegisterForm(request.post, instance=business.designer)
-        user_form = CustomerForm(request.post, instance=business.designer.user)
-        business_form = DesignerBusinessDetailsForm(request.post, instance=business)
+        designer_form = DesignerRegisterForm(request.POST, instance=business.designer)
+        user_form = CustomerChangeForm(request.POST, instance=business.designer.user)
+        business_form = DesignerBusinessDetailsForm(request.POST, instance=business)
         
         if designer_form.is_valid() and user_form.is_valid() and business_form.is_valid():
-            designer_form.save()
+            designer = designer_form.save()
             user_form.save()
             business_form.save()
             
-            return redirect('designer_details')
+            return redirect('designer_details', pk=designer.pk)
         
         return render(request, 'designer/designer_update_form.html', {
             'business': business_form,
@@ -89,3 +90,9 @@ class DesignerDetailUpdateView(generic.View):
 class DesignerListView(generic.ListView):
     template_name = "designer/all_designers.html"
     model = DesignerRegister
+    
+    
+class DesignerInfoView(generic.DetailView):
+    model = DesignerRegister
+    context_object_name = 'designer'
+    template_name = 'designer/designer_info.html'
