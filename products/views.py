@@ -47,3 +47,8 @@ class ProductDetailsView(generic.CreateView):
 
 def success_url(request):
     return render(request, 'products/success.html')
+
+
+class ProductListView(generic.ListView):
+    template_name = "products/all_products.html"
+    model = ProductDetailsModel
