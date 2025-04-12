@@ -47,7 +47,7 @@ class UserLoginView(LoginView):
         elif user.user_type == 'Designer':
             return redirect('designer_home_page')
         elif user.user_type == 'Delivery_boy':
-            return redirect('delivery_boy_home')
+            return redirect('delivery_boy_home_page')
    
 
 class UserLogoutView(LogoutView):
