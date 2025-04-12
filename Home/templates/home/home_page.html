@@ -1,267 +1,74 @@
-<!DOCTYPE html>
+{% extends "home/base.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Designer’s Adda</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
-        body {
-            background-color: #c5f3f7;
-            color: #333;
-            line-height: 1.6;
-        }
+{% block title %}Home - Designer’s Adda{% endblock %}
 
-        .glass {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
 
-        header {
-            position: sticky;
-            top: 0;
-            background: rgba(11, 243, 243, 0.692);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            font-family: 'Great Vibes', cursive;
-        }
+</section>
 
-        nav a {
-            margin-left: 1.2rem;
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-        }
-
-        nav a:hover {
-            color: #ff4081;
-        }
-
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 90vh;
-            text-align: center;
-            color: white;
-            background-image: url('{% static 'images/background1.jpg' %}');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .hero .glass {
-            padding: 3rem;
-            max-width: 700px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-        }
-
-        .hero p {
-            margin: 1rem 0 2rem;
-            font-size: 1.2rem;
-        }
-
-        .btn {
-            background: #ff4081;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .section {
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #222;
-        }
-
-        .product-grid,
-        .designer-grid,
-        .testimonial-grid {
-            display: grid;
-            gap: 2rem;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        .card {
-            padding: 1.5rem;
-            border-radius: 16px;
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card img {
-            width: 100%;
-            border-radius: 12px;
-            height: 500px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-        }
-
-        .faq-item {
-            max-width: 700px;
-            margin: 1rem auto;
-            text-align: left;
-        }
-
-        .faq-question {
-            font-weight: bold;
-            cursor: pointer;
-            background: #f0f0f0;
-            padding: 1rem;
-            border-radius: 12px;
-        }
-
-        .faq-answer {
-            display: none;
-            padding: 0.8rem 1.2rem;
-            background: #fff;
-            border-left: 3px solid #ff4081;
-            border-radius: 0 0 12px 12px;
-        }
-
-        .newsletter input {
-            padding: 0.7rem;
-            border-radius: 50px;
-            border: 1px solid #ccc;
-            width: 60%;
-            margin-right: 1rem;
-        }
-
-        .footer {
-            background: rgba(11, 243, 243, 0.692);
-            padding: 2rem;
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Header -->
-    <header>
-        <h2>Designer’s Adda</h2>
-        <nav>
-            <a href="/">Home</a>
-            <a href="#designers">Designers</a>
-            <a href="#products">Shop</a>
-            <a href="/about/">About Us</a>
-            <a href="/login/">Login</a>
-            <a href="/user_register/">Register</a>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-
-    </section>
-
-    <!-- Product Showcase -->
-    <section class="section" id="products">
-        <h2>Featured Products</h2>
-        <div class="product-grid">
-            <div class="card glass">
-                <img src="{% static 'images/Short_Skirt.jpeg' %}" alt="">
-                <h3>Short Skirt</h3>
-                <p>₹1,999</p>
-            </div>
-            <div class="card glass">
-                <img src="{% static 'images/Crop_Top.jpeg' %}" alt="">
-                <h3>Crop Tops</h3>
-                <p>₹5,499</p>
-            </div>
-            <div class="card glass">
-                <img src="{% static 'images/Sharara.jpeg' %}" alt="">
-                <h3>Sharara Suit</h3>
-                <p>₹2,999</p>
-            </div>
+<!-- Product Showcase -->
+<section class="section" id="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+        <div class="card glass">
+            <img src="{% static 'images/Short_Skirt.jpeg' %}" alt="">
+            <h3>Short Skirt</h3>
+            <p>₹1,999</p>
         </div>
-    </section>
-
-    <!-- Designer Showcase -->
-    <section class="section" id="designers">
-        <h2>Meet the Designers</h2>
-        <div class="designer-grid">
-            <div class="card glass">
-                <img src="{% static 'designers/Snehalata_jain.jpg' %}" alt="">
-                <h3>Snehalata Jain</h3>
-                <p>Known for her fusion ethnic styles blending modern and traditional silhouettes.</p>
-            </div>
-            <div class="card glass">
-                <img src="{% static 'designers/VirtyJain.jpg' %}" alt="">
-                <h3>Virty Jain</h3>
-                <p>Minimalist streetwear designer pushing the boundaries of comfort fashion.</p>
-            </div>
-            <div class="card glass">
-                <img src="{% static 'designers/Ruchi_Jain.jpg' %}" alt="">
-                <h3>Ruchi Jain</h3>
-                <p>Known for her Indian Wear styles and complex designs featuring Traditional prints and silhouettes.</p>
-            </div>
+        <div class="card glass">
+            <img src="{% static 'images/Crop_Top.jpeg' %}" alt="">
+            <h3>Crop Tops</h3>
+            <p>₹5,499</p>
         </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="section" id="testimonials">
-        <h2>What Our Customers Say</h2>
-        <div class="testimonial-grid">
-            <div class="card glass">
-                <p>"Absolutely stunning collection! Got so many compliments for my outfit!"</p>
-                <strong>- Priya S.</strong>
-            </div>
-            <div class="card glass">
-                <p>"The design and quality exceeded my expectations. Will shop again!"</p>
-                <strong>- Neha R.</strong>
-            </div>
-            <div class="card glass">
-                <p>"Love the variety and creativity. It's like shopping art!"</p>
-                <strong>- Aman K.</strong>
-            </div>
+        <div class="card glass">
+            <img src="{% static 'images/Sharara.jpeg' %}" alt="">
+            <h3>Sharara Suit</h3>
+            <p>₹2,999</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Designer’s Adda | Made with ❤️ for fashion lovers</p>
-        <p>Contact: support@designersadda.in | Follow us on Instagram</p>
-        <p>Email: designers_adda@gmail.com</p>
-        <p>Instagram: designers_adda</p>
-        <p>Facebook: designers_adda</p>
-        <p>Twitter: @designers_adda</p>
-    </footer>
+<!-- Designer Showcase -->
+<section class="section" id="designers">
+    <h2>Meet the Designers</h2>
+    <div class="designer-grid">
+        <div class="card glass">
+            <img src="{% static 'designers/Snehalata_jain.jpg' %}" alt="">
+            <h3>Snehalata Jain</h3>
+            <p>Known for her fusion ethnic styles blending modern and traditional silhouettes.</p>
+        </div>
+        <div class="card glass">
+            <img src="{% static 'designers/VirtyJain.jpg' %}" alt="">
+            <h3>Virty Jain</h3>
+            <p>Minimalist streetwear designer pushing the boundaries of comfort fashion.</p>
+        </div>
+        <div class="card glass">
+            <img src="{% static 'designers/Ruchi_Jain.jpg' %}" alt="">
+            <h3>Ruchi Jain</h3>
+            <p>Known for her Indian Wear styles and complex designs featuring Traditional prints and silhouettes.</p>
+        </div>
+    </div>
+</section>
 
-    <script>
-        function toggleFAQ(elem) {
-            const answer = elem.nextElementSibling;
-            answer.style.display = answer.style.display === "block" ? "none" : "block";
-        }
-    </script>
-</body>
-</html>
+<!-- Testimonials -->
+<section class="section" id="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-grid">
+        <div class="card glass">
+            <p>"Absolutely stunning collection! Got so many compliments for my outfit!"</p>
+            <strong>- Priya S.</strong>
+        </div>
+        <div class="card glass">
+            <p>"The design and quality exceeded my expectations. Will shop again!"</p>
+            <strong>- Neha R.</strong>
+        </div>
+        <div class="card glass">
+            <p>"Love the variety and creativity. It's like shopping art!"</p>
+            <strong>- Aman K.</strong>
+        </div>
+    </div>
+</section>
+{% endblock %}
