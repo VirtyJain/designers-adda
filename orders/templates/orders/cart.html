@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image : url('{% static 'images/coloured_background.jpg' %}');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #0bf3f3;
+            color: #333;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 12px 25px;
+            background-color: #ff4081;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .checkout-btn:hover {
+            background-color: #e73572;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>{{ user.first_name }} {{ user.last_name }}'s Cart</h2>
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Price (₹)</th>
+                <th>Description</th>
+            </tr>
+            {% for item in cart_items %}
+            <tr>
+                <td>
+                    {% with item.product.product_images.first as image %}
+                        {% if image %}
+                            <img src="{{ image.product_image.url }}" alt="{{ item.product.product_name }}" style="width: 100px; height: auto; border-radius: 8px;">
+                        {% else %}
+                            <span>No image</span>
+                        {% endif %}
+                    {% endwith %}
+                </td>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.product.product_price }}</td>
+                <td>{{ item.product.product_description }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align:center; padding: 30px;">Your cart is empty!</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>

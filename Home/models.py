@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
-GENDERS_CHOICES = (('M','Male'), ('F', 'Female'), ('O', 'Other'))
+GENDERS_CHOICES = (('Male','Male'), ('Female', 'Female'), ('Other', 'Other'))
 USER_TYPE = (('Customer', 'Customer'), ("Designer", 'Designer'), ("Delivery_boy", 'Delivery_boy'))
 
 class BaseClass(AbstractUser):
