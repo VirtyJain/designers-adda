@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Place Order</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 6px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .mainBody {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('{% static "images/coloured_background.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }   
+
+        .register-box {
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-box h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #00796b;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00acc1;
+            box-shadow: 0 0 5px rgba(0, 172, 193, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #00acc1;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #007c91;
+        }
+
+        @media (max-width: 768px) {
+            .register-box {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mainBody">
+        <div class="register-box">
+            <h2>Confirm Your Order</h2>
+
+            <div class="form-group">
+                <label><strong>Product:</strong></label>
+                <input type="text" value="{{ cart_item.product.product_name }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Price per item:</strong></label>
+                <input type="text" value="₹ {{ cart_item.product.product_price }}" readonly>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Quantity:</label>
+                    <input type="number" name="quantity" value="1" min="1" required>
+                </div>
+
+                <button type="submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

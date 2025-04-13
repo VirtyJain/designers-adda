@@ -72,19 +72,19 @@
 <body>
 
     <div class="container">
-        <h2>{{ user.first_name }} {{ user.last_name }}'s Cart</h2>
+        <h2>{{ user.first_name }} {{ user.last_name }}'s Orders</h2>
         <table>
             <tr>
                 <th>Image</th>
                 <th>Product</th>
-                <th>Price (₹)</th>
-                <th>Description</th>
-                <th>Order</th>
+                <th>Total Price (₹)</th>
+                <th>Quantity</th>
+                <th>Order Status</th>
             </tr>
-            {% for item in cart_items %}
+            {% for item in order_items %}
             <tr>
                 <td>
-                    {% with item.product.product_images.first as image %}
+                    {% with item.cart_product.product.product_images.first as image %}
                         {% if image %}
                             <img src="{{ image.product_image.url }}" alt="{{ item.product.product_name }}" style="width: 100px; height: auto; border-radius: 8px;">
                         {% else %}
@@ -92,12 +92,10 @@
                         {% endif %}
                     {% endwith %}
                 </td>
-                <td>{{ item.product.product_name }}</td>
-                <td>{{ item.product.product_price }}</td>
-                <td>{{ item.product.product_description }}</td>
-                <td>
-                    <a href="/orders/place_order/{{ item.id }}/" class="checkout-btn">Order</a>
-                </td>
+                <td>{{ item.cart_product.product.product_name }}</td>
+                <td>{{ item.total_price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.order_status }}</td>
             </tr>
             {% empty %}
             <tr>

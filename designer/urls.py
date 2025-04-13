@@ -10,5 +10,9 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('all_designers/', views.DesignerListView.as_view(), name='display_all_designers'),
     path('info/<int:pk>/', views.DesignerInfoView.as_view(), name='designer_info'),
+    path('products/<int:pk>/', views.DesignerProductListView.as_view(), name='designer_products'),
+    path('product/info/<int:pk>/', views.DesignerProductInfoView.as_view(), name='designer_product_info'),
+    path('update_product/<int:pk>/', views.DesignerProductUpdateView.as_view(), name='designer_product_update'),
+    path('delete_product/<int:pk>/', views.DesignerProductDeleteView.as_view(), name='designer_product_delete'),
     
 ]

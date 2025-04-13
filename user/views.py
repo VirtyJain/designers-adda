@@ -14,10 +14,6 @@ def about_page(request):
     return render(request, template_name="user/about.html")
 
 
-def order_page(request):
-    return render(request, template_name="user/orders.html")
-
-
 class UserDetailView(generic.DetailView):
     model = CustomUser
     template_name = "user/customuser_detail.html"
