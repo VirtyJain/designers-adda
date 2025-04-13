@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from products.models import ProductDetailsModel
-from .models import CartModel
+from .models import CartModel, OrderModel
 
 
 def add_to_cart(request, pk):
@@ -14,3 +15,32 @@ def add_to_cart(request, pk):
 def view_cart(request, pk):
     cart_items = CartModel.objects.filter(user=request.user)
     return render(request, 'orders/cart.html', {'cart_items': cart_items, pk:pk})
+
+
+@login_required
+def place_order(request, pk):
+    cart_item = get_object_or_404(CartModel, id=pk, user=request.user)
+
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        user = request.user
+        total_price = cart_item.product.product_price * quantity
+
+        order = OrderModel.objects.create(
+            cart_product=cart_item,
+            user=user,
+            quantity=quantity,
+            total_price=total_price,
+        )
+        
+        return redirect('order_success')
+
+    return render(request, 'orders/place_order.html', {'cart_item': cart_item})
+
+
+def order_success(request):
+    return render(request, 'orders/order_success.html')
+
+def order_history(request, pk):
+    order_items = OrderModel.objects.filter(user=request.user)
+    return render(request, 'orders/orders.html', {'order_items': order_items, pk:pk})

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Info</title>
+    <title>Designer Product Info</title>
     <style>
         body {
             margin: 0;
@@ -92,11 +92,10 @@
             {% endfor %}
         </div>
         <p>{{ product.product_description }}</p>
-        <p>Designed by <strong>{{ product.designer.user.first_name }} {{ product.designer.user.last_name }}</strong> ({{ product.designer.bio }})</p>      
         <p>{{ product.product_category }}</p>
         <p><strong>Price:</strong>{{ product.product_price }}</p>
-        <a href="/orders/add_to_cart/{{product.id}}/" class="cart-btn">Add To Cart</a>
-
+        <a href="/designer/update_product/{{product.id}}/" class="cart-btn">Update</a>
+        <a href="/designer/delete_product/{{product.id}}/" class="cart-btn">Delete</a>
     </div>
 </body>
 </html>

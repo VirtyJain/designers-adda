@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from .forms import DesignerRegisterForm, DesignerBusinessDetailsForm
 from .models import DesignerRegister, DesignerBusinessDetails
 from Home.forms import CustomerChangeForm
+from products.models import ProductDetailsModel
+from products.forms import ProductDetailsForm
 # Create your views here.
 
 
@@ -96,3 +99,33 @@ class DesignerInfoView(generic.DetailView):
     model = DesignerRegister
     context_object_name = 'designer'
     template_name = 'designer/designer_info.html'
+    
+    
+class DesignerProductListView(generic.ListView):
+    template_name = "designer/designer_products.html"
+    model = ProductDetailsModel
+    
+    def get_queryset(self):
+        designer_id = self.kwargs['pk']
+        return ProductDetailsModel.objects.filter(designer=designer_id)
+    
+class DesignerProductInfoView(generic.DetailView):
+    model = ProductDetailsModel
+    context_object_name = 'product'
+    template_name = 'designer/product_info.html'
+    
+    
+class DesignerProductUpdateView(generic.UpdateView):
+    model = ProductDetailsModel
+    form_class = ProductDetailsForm
+    template_name = "designer/product_update.html"
+    
+    def get_success_url(self):
+        return reverse('designer_products', kwargs={'pk': self.object.designer.pk})
+    
+class DesignerProductDeleteView(generic.DeleteView):
+    model = ProductDetailsModel
+    template_name = "designer/product_delete.html"
+
+    def get_success_url(self):
+        return reverse('designer_products', kwargs={'pk': self.object.designer.pk})
