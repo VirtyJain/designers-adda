@@ -55,7 +55,7 @@ class DesignerBusinessFormView(generic.CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         
-        # getting the designer from session``
+        # getting the designer from session
         self.designer_id = request.session.get('designer_id')
         return super().dispatch(request, *args, **kwargs)
 
@@ -75,12 +75,6 @@ class DesignerDetailsView(generic.DetailView):
     model = DesignerRegister
     context_object_name = 'designer'
     template_name = 'designer/designer_detail.html'
-    
-
-class DesignerUpdateView(generic.UpdateView):
-    model = DesignerRegister
-    fields = ['__all__']
-    success_url = '/designer/profile/'
 
 
 class DesignerDetailUpdateView(generic.View):
@@ -138,13 +132,13 @@ class DesignerProductListView(generic.ListView):
         designer_id = self.kwargs['pk']
         return ProductDetailsModel.objects.filter(designer=designer_id)
     
-    
+   
 class DesignerProductInfoView(generic.DetailView):
     model = ProductDetailsModel
     context_object_name = 'product'
     template_name = 'designer/product_info.html'
     
-    
+
 class DesignerProductUpdateView(generic.UpdateView):
     model = ProductDetailsModel
     form_class = ProductDetailsForm
@@ -153,7 +147,7 @@ class DesignerProductUpdateView(generic.UpdateView):
     def get_success_url(self):
         return reverse('designer_products', kwargs={'pk': self.object.designer.pk})
     
-    
+
 class DesignerProductDeleteView(generic.DeleteView):
     model = ProductDetailsModel
     template_name = "designer/product_delete.html"

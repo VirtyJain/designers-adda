@@ -58,3 +58,9 @@ class ProductInfoView(generic.DetailView):
     model = ProductDetailsModel
     context_object_name = 'product'
     template_name = 'products/product_info.html'
+    
+    
+class CartProductInfoView(generic.DetailView):
+    model = ProductDetailsModel
+    context_object_name = 'product'
+    template_name = 'products/cart_product_info.html'

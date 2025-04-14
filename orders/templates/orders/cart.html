@@ -92,7 +92,7 @@
                         {% endif %}
                     {% endwith %}
                 </td>
-                <td>{{ item.product.product_name }}</td>
+                <td><a href="/products/cart_product/{{ item.product.id }}/">{{ item.product.product_name }}</a></td>
                 <td>{{ item.product.product_price }}</td>
                 <td>{{ item.product.product_description }}</td>
                 <td>
