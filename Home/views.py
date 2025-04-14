@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
@@ -31,6 +33,15 @@ class CustomerFormView(generic.FormView):
     
     def form_valid(self, form):
         customer = form.save()
+        
+        send_mail(
+            subject = 'Welcome to Designer’s Adda!',
+            message = f'{customer.first_name}, Thank you for registering with Designer’s Adda. Your registration was successful.\n\nVisit the website and login to continue.',
+            from_email = settings.EMAIL_HOST_USER,
+            recipient_list = [customer.email],
+            fail_silently = False,
+        )
+        
         return render(self.request, 'home/success.html', context = {'customer': customer})
 
 

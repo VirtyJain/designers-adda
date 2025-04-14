@@ -44,15 +44,15 @@
     <h2>Our Talented Designers</h2>
     <div class="designer-grid">
         {% for designer in designerregister_list %}
-        <div class="card glass">
-            {% if designer.user.image %}
-            <img src="{{ designer.user.image.url }}">
-            {% else %}
-            <img src="{% static 'images/default_profile.png' %}" alt="default image">
-            {% endif %}
-            <h3><a href="/designer/info/{{designer.id}}">{{ designer.user.first_name }} {{ designer.user.last_name }}</a></h3>
-            <p>{{ designer.bio }}</p>
-        </div>
+            <a href="/designer/info/{{designer.id}}/" class="card glass" style="text-decoration: none; color: inherit;">
+                {% if designer.user.image %}
+                <img src="{{ designer.user.image.url }}">
+                {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="default image">
+                {% endif %}
+                <h3>{{ designer.user.first_name }} {{ designer.user.last_name }}</h3>
+                <p>{{ designer.bio }}</p>
+            </a>
         {% endfor %}
     </div>
 </section>
