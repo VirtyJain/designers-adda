@@ -13,40 +13,69 @@ def about(request):
     return render(request, template_name="designer/about.html")
 
 
+def designers_home_view(request):
+    
+    designer = DesignerRegister.objects.get(user=request.user)  # Assuming a related Designer model
+    designer_id = designer.id
+    
+    return render(request, 'designer/designers_home.html', {
+        'designer': designer,
+        'designer_id': designer_id,
+    })
+
+
 class DesignerFormView(generic.FormView):
     form_class = DesignerRegisterForm
     template_name = 'designer/designer_register.html'
-    
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user # Passing the current user to the form
+        return kwargs
+
     def form_valid(self, form):
-        designer = form.save()
-        return render(self.request, 'designer/business_details.html', context = {'designer': designer})
-    
+        user = self.request.user
+
+        user.user_type = 'designer'
+        user.save()
+        
+        # Saving the designer details
+        designer = form.save(commit=False)
+        designer.user = user
+        designer.save()
+
+        # Redirect to business details form, pass designer.pk in session
+        self.request.session['designer_id'] = designer.pk
+        return redirect('designer_business_register', pk=designer.pk)
+
 
 class DesignerBusinessFormView(generic.CreateView):
     form_class = DesignerBusinessDetailsForm
     template_name = 'designer/business_details.html'
-    
-    def form_valid(self, form):
-        business = form.save()
-        return render(self.request, 'designer/home.html', context = {'business': business})
 
-    # def get_success_url(self):
+    def dispatch(self, request, *args, **kwargs):
         
-    #     return super().get_success_url()
+        # getting the designer from session``
+        self.designer_id = request.session.get('designer_id')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        designer = get_object_or_404(DesignerRegister, pk=self.designer_id)
+        business = form.save(commit=False)
+        business.designer = designer
+        business.save()
+
+        # Clean up session
+        del self.request.session['designer_id']
+
+        return redirect('designer_home_page')
+
 
 class DesignerDetailsView(generic.DetailView):
     model = DesignerRegister
     context_object_name = 'designer'
     template_name = 'designer/designer_detail.html'
     
-    # def get_context_data(self, **kwargs):
-    #     print(kwargs)
-    #     breakpoint()
-    #     return super().get_context_data(**kwargs)
-
-def designers_home_view(request):
-    return render(request, 'designer/designers_home.html')
-
 
 class DesignerUpdateView(generic.UpdateView):
     model = DesignerRegister
@@ -109,6 +138,7 @@ class DesignerProductListView(generic.ListView):
         designer_id = self.kwargs['pk']
         return ProductDetailsModel.objects.filter(designer=designer_id)
     
+    
 class DesignerProductInfoView(generic.DetailView):
     model = ProductDetailsModel
     context_object_name = 'product'
@@ -122,6 +152,7 @@ class DesignerProductUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         return reverse('designer_products', kwargs={'pk': self.object.designer.pk})
+    
     
 class DesignerProductDeleteView(generic.DeleteView):
     model = ProductDetailsModel

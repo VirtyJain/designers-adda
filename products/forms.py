@@ -8,7 +8,6 @@ class ProductDetailsForm(forms.ModelForm):
     """
     class Meta:
         model = ProductDetailsModel
-        # fields = "__all__"
         exclude = ["designer"]
         
         widgets = {

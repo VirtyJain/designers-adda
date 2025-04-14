@@ -14,12 +14,13 @@ class DesignerRegisterForm(forms.ModelForm):
         
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your bio'}),
-            # 'certificate': forms.FileInput(attrs={'class': 'form-control'}),
             'experience': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your years of experience'}),
-            'skills': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your skills'}),
-            # 'portfolio': forms.FileInput(attrs={'class': 'form-control'}),
-            
+            'skills': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your skills'}),            
         }
+        
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
         
         
 class DesignerBusinessDetailsForm(forms.ModelForm):

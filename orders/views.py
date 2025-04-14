@@ -41,6 +41,7 @@ def place_order(request, pk):
 def order_success(request):
     return render(request, 'orders/order_success.html')
 
+
 def order_history(request, pk):
     order_items = OrderModel.objects.filter(user=request.user)
     return render(request, 'orders/orders.html', {'order_items': order_items, pk:pk})
