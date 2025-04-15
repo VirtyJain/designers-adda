@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 import random
 from django.conf import settings
 from django.views import generic
@@ -60,35 +62,76 @@ def place_order(request, pk):
             state=state,
             pincode=pincode
         )
-
+        
+        context = {
+            "user_name": user.first_name,
+            "product_name": cart_item.product.product_name,
+            "quantity": quantity,
+            "total_price": total_price,
+            "delivery_boy": delivery_boy.user.first_name,
+            "house_no": house_no,
+            "address": address,
+            "landmark": landmark,
+            "city": city,
+            "state": state,
+            "pincode": pincode,
+            "designer_name": f'{ cart_item.product.designer.user.first_name } { cart_item.product.designer.user.last_name }',
+            "designer_contact": cart_item.product.designer.user.contact_no,
+            
+        }
 
         # Email to Customer
-        send_mail(
-            subject = 'Welcome to Designer’s Adda!',
-            message = f'{user.first_name}, Your Order Placed Successfully. Thank you for Shopping with us.\n\nYour order will be delivered to you soon.\n\n Continue Shopping....',
-            from_email = settings.EMAIL_HOST_USER,
-            recipient_list = [user.email],
-            fail_silently = False,
+        receiver_email = user.email
+        template_name = "orders/customer_email.html"
+        convert_to_html_content =  render_to_string(
+            template_name=template_name,
+            context=context
         )
+        plain_message = strip_tags(convert_to_html_content)
 
-        # Email to Delivery Boy
-        if delivery_boy:
-            send_mail(
-                subject='New Order Assigned',
-                message=f'Dear {delivery_boy.user.first_name}, a new order has been assigned to you.\nDeliver to: { order.house_no }, {order.address}, {order.landmark}, {order.city}, {order.state}, {order.pincode}. \n \nOrder Details:\nProduct: {cart_item.product.product_name}\nQuantity: {quantity}\nTotal Price: {total_price}. \n Pick this product from designer: {cart_item.product.designer.user.first_name} {cart_item.product.designer.user.last_name}.\n Contact: {cart_item.product.designer.user.contact_no}.\n\n Thankyou.',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[delivery_boy.user.email],
-                fail_silently=False,
-            )
-
-        # Email to Designer
-        designer = cart_item.product.designer
-        send_mail(
-            subject='Your Product Got Ordered!',
-            message=f'Hi {designer.user.first_name}, your product "{cart_item.product.product_name}" has been ordered by {user}. Make sure to prepare it for delivery.\n\nOrder Details:\nQuantity: {quantity}\nTotal Price: {total_price} \n\n The delivery boy will reach out to you soon. \n\n Thankyou.',
+        yo_send_it = send_mail(
+            subject="Order Placed Successfully",
+            message=plain_message,
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[designer.user.email],
-            fail_silently=False,
+            recipient_list=[receiver_email,],
+            html_message=convert_to_html_content,
+            fail_silently=True
+        )
+        
+        # Email to Designer
+        receiver_email = cart_item.product.designer.user.email
+        template_name = "orders/designer_email.html"
+        convert_to_html_content =  render_to_string(
+            template_name=template_name,
+            context=context
+        )
+        plain_message = strip_tags(convert_to_html_content)
+
+        yo_send_it = send_mail(
+            subject="New Order Received",
+            message=plain_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[receiver_email,],
+            html_message=convert_to_html_content,
+            fail_silently=True
+        )
+        
+        # Email to Delivery boy
+        receiver_email = delivery_boy.user.email
+        template_name = "orders/delivery_boy_email.html"
+        convert_to_html_content =  render_to_string(
+            template_name=template_name,
+            context=context
+        )
+        plain_message = strip_tags(convert_to_html_content)
+
+        yo_send_it = send_mail(
+            subject="New Order Received",
+            message=plain_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[receiver_email,],
+            html_message=convert_to_html_content,
+            fail_silently=True
         )
 
         return redirect('order_success')
