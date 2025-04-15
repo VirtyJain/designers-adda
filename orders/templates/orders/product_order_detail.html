@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Info</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-image: url('{% static 'images/coloured_background.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+        .product-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+    
+        .product-box:hover {
+            transform: translateY(-5px);
+        }
+    
+        .product-box h2 {
+            color: #00796b;
+            margin-bottom: 1.2rem;
+        }
+    
+        .product-image {
+            margin-bottom: 1rem;
+        }
+    
+        .product-image img {
+            height: 250px;
+            width: 200px;
+            border-radius: 10%;
+            object-fit: cover;
+            border: 4px solid #00796b50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cart-btn {
+            display: inline-block;
+            background-color: #00796b;
+            color: #fff;
+            padding: 0.9rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cart-btn:hover {
+            background-color: #005e56;
+            transform: scale(1.05);
+        }
+    
+        @media (max-width: 600px) {
+            .profile-info p {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .profile-info p strong {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="product-box">
+        <h2>{{ order_product.cart_product.product.product_name }}</h2>
+    
+        <div class="product-image">
+            {% for image in order_product.cart_product.product.product_images.all %}
+                <img src="{{ image.product_image.url }}" alt="{{ order_product.cart_product.product.product_name }}">
+            {% endfor %}
+        </div>
+        <p>{{ order_product.cart_product.product.product_description }}</p>
+        <p>Designed by <strong>{{ order_product.cart_product.product.designer.user.first_name }} {{ order_product.cart_product.product.designer.user.last_name }}</strong> ({{ order_product.designer.bio }})</p>      
+        <p><strong>Price:</strong>{{ order_product.cart_product.product.product_price }}</p>
+        <p>Address: {{ order_product.house_no }}, {{ order_product.address }},{{ order_product.city }},{{ order_product.state }},</p>
+        <p>Landmark: {{ order_product.landmark }}</p>
+        <p>Pincode: {{ order_product.pincode }}</p>
+    </div>
+</body>
+</html>

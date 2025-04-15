@@ -4,9 +4,10 @@ from django.shortcuts import render, redirect
 from .forms import ProductDetailsForm, ProductImageForm
 from .models import ProductDetailsModel, ProductImageModel
 from designer.models import DesignerRegister
+from Home.views import LoginRequiredBaseView
 
 
-class ProductDetailsView(generic.CreateView):
+class ProductDetailsView(LoginRequiredBaseView, generic.CreateView):
     
     """
     View to save product details of designers.
@@ -45,22 +46,39 @@ class ProductDetailsView(generic.CreateView):
         return render(request, 'products/product_form.html', {'form': form})
 
 
+# to show success page after product details are saved
 def success_url(request):
     return render(request, 'products/success.html')
 
 
 class ProductListView(generic.ListView):
+    
+    """
+    to show all products in the list view.
+    this view is for all users.
+    """
+    
     template_name = "products/all_products.html"
     model = ProductDetailsModel
     
     
 class ProductInfoView(generic.DetailView):
+    
+    """
+    to show product details to the user.
+    """
+    
     model = ProductDetailsModel
     context_object_name = 'product'
     template_name = 'products/product_info.html'
     
     
 class CartProductInfoView(generic.DetailView):
+    
+    """
+    to show cart product details to the user.
+    """
+    
     model = ProductDetailsModel
     context_object_name = 'product'
     template_name = 'products/cart_product_info.html'

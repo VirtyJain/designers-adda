@@ -15,12 +15,22 @@ def about_page(request):
 
 
 class UserDetailView(generic.DetailView):
+    
+    """
+    View to show customer profile page.
+    """
+    
     model = CustomUser
     template_name = "user/customuser_detail.html"
     context_object_name = "user"
     
 
 class UserUpdateView(generic.UpdateView):
+    
+    """
+    View to update customer profile.
+    """
+    
     model = CustomUser
     form_class = CustomerChangeForm
     template_name = "user/customuser_update.html"

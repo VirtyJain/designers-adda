@@ -3,6 +3,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
@@ -23,11 +25,26 @@ def about(request):
     return render(request, template_name="home/about.html")
 
 
+@login_required
 def logout_confirmation(request):
     return render(request, template_name="home/logout.html")
 
 
+class LoginRequiredBaseView(LoginRequiredMixin):
+    
+    """
+    Login required mixin view to restrict access to logged-in users only.
+    """
+    
+    login_url = '/login/'
+
+
 class CustomerFormView(generic.FormView):
+    
+    """
+    View to store registered customer details.
+    """
+    
     form_class = CustomerForm
     template_name = 'home/user_register.html'
     
@@ -46,6 +63,11 @@ class CustomerFormView(generic.FormView):
 
 
 class UserLoginView(LoginView):
+    
+    """
+    view to login user.
+    """
+    
     template_name = 'home/login.html'
     form_class = AuthenticationForm
     
@@ -61,11 +83,21 @@ class UserLoginView(LoginView):
             return redirect('delivery_boy_home_page')
    
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(LoginRequiredBaseView, LogoutView):
+    
+    """
+    view to log out user.
+    """
+    
     next_page = reverse_lazy('home_page')
     
 
-class UserDeleteView(generic.DeleteView):
+class UserDeleteView(LoginRequiredBaseView, generic.DeleteView):
+    
+    """
+    view to delete user account.
+    """
+    
     model = CustomUser
     template_name = "home/delete.html"
     success_url = reverse_lazy('home_page')
