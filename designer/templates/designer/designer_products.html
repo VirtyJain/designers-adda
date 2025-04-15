@@ -62,16 +62,18 @@
     <h2>Your Products</h2>
     <div class="designer-grid">
         {% for product in productdetailsmodel_list %}
-        <div class="card glass">
+        <a href="/designer/product/info/{{product.id}}/" class="card glass" style="text-decoration: none; color: inherit;">
             {% with product.product_images.all|first as image %}
                 {% if image %}
                     <img src="{{ image.product_image.url }}" alt="{{ product.product_name }}">
                 {% endif %}
             {% endwith %}
-            <h3><a href="/designer/product/info/{{product.id}}/">{{ product.product_name }}</a></h3>
+            <h3>{{ product.product_name }}</h3>
             <p>{{ product.product_description }}</p>
             <p><strong>Price:</strong> ₹{{ product.product_price }}</p>
-        </div>
+        </a>
+        {% empty %}
+            <p style="text-align: center; padding: 30px;">No products available!</p>
         {% endfor %}
     </div>
 </section>

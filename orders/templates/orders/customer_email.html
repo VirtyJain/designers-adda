@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Order Placed Successfully</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ user_name }},</p>
+            <p>Your Order Placed Successfully. Thank you for Shopping with us.</p>
+            <p> Your order will be delivered to you soon. </p>
+            <p><strong>Order Details:</strong></p>
+            <p>Product name: {{ product_name }}</p>
+            <p>Quantity: {{ quantity }}</p>
+            <p>Total price: {{ total_price }} Rupee</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -120,9 +120,9 @@
     
         <div class="profile-image">
             {% if user.image %}
-        <img src="{{ user.image.url }}"  height="100" width="100">
-        {% else %}
-            <img src="{{ user.image }}" alt="{{ user.first_name }}" height="100" width="100">
+                <img src="{{ user.image.url }}"  height="100" width="100">
+            {% else %}
+                <img src="{% static 'images/profile_icon.jpeg' %}" alt="{{ user.first_name }}" height="100" width="100">
             {% endif %}
         </div>
     
