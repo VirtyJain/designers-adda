@@ -3,6 +3,86 @@
 
 {% block title %}Home - Designer’s Adda{% endblock %}
 
+{% block extra_style %}
+<style>
+    section#products {
+        background-color: #e0f7fa;
+        padding: 30px 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        margin: 30px auto;
+        width: 95%;
+    }
+
+    section#products h2 {
+        text-align: center;
+        font-size: 2rem;
+        color: #00796b;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        padding: 15px 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #0097a7;
+        color: white;
+        font-weight: 600;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+        transition: 0.3s ease;
+    }
+
+    .table td {
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .table thead {
+            display: none;
+        }
+
+        .table tr {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .table td {
+            display: block;
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            width: 50%;
+            padding-left: 15px;
+            font-weight: bold;
+            text-align: left;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero">
@@ -13,43 +93,37 @@
 <section class="section" id="products">
     <h2>Orders Received</h2>
     <div class="product-grid">
-        <div class="card glass">
-            <img src="{% static 'images/Short_Skirt.jpeg' %}" alt="">
-            <h3>Short Skirt</h3>
-            <p>₹1,999</p>
-        </div>
-        <div class="card glass">
-            <img src="{% static 'images/Crop_Top.jpeg' %}" alt="">
-            <h3>Crop Tops</h3>
-            <p>₹5,499</p>
-        </div>
-        <div class="card glass">
-            <img src="{% static 'images/Sharara.jpeg' %}" alt="">
-            <h3>Sharara Suit</h3>
-            <p>₹2,999</p>
-        </div>
-    </div>
-</section>
-
-<!-- Designer Showcase -->
-<section class="section" id="designers">
-    <h2>Pending Orders</h2>
-    <div class="designer-grid">
-        <div class="card glass">
-            <img src="{% static 'designers/Snehalata_jain.jpg' %}" alt="">
-            <h3>Snehalata Jain</h3>
-            <p>Known for her fusion ethnic styles blending modern and traditional silhouettes.</p>
-        </div>
-        <div class="card glass">
-            <img src="{% static 'designers/VirtyJain.jpg' %}" alt="">
-            <h3>Virty Jain</h3>
-            <p>Minimalist streetwear designer pushing the boundaries of comfort fashion.</p>
-        </div>
-        <div class="card glass">
-            <img src="{% static 'designers/Ruchi_Jain.jpg' %}" alt="">
-            <h3>Ruchi Jain</h3>
-            <p>Known for her Indian Wear styles and complex designs featuring Traditional prints and silhouettes.</p>
-        </div>
+        {% if orders %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Order Date</th>
+                    <th>Order Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td data-label="Order ID">{{ order.id }}</td>
+                    <td data-label="Customer">{{ order.user.username }}</td>
+                    <td data-label="Product Name">{{ order.cart_product.product.product_name }}</td>
+                    <td data-label="Quantity">{{ order.quantity }}</td>
+                    <td data-label="Total Price">₹{{ order.total_price }}</td>
+                    <td data-label="Order Date">{{ order.order_date|date:"d M, Y H:i A" }}</td>
+                    <td data-label="Order Status">{{ order.order_status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+        {% else %}
+            <p>No orders found for your products yet.</p>
+        {% endif %}
     </div>
 </section>
 

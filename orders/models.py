@@ -41,3 +41,20 @@ class OrderModel(models.Model):
 
     def __str__(self):
         return f"Order {self.id} by {self.user.username}"
+    
+
+PAYMENT_STATUS_CHOICES = [
+    ('Pending', 'Pending'),
+    ('Completed', 'Completed'),
+    ('Failed', 'Failed'),
+]
+   
+class PaymentModel(models.Model):
+    order = models.OneToOneField(OrderModel, on_delete=models.CASCADE)
+    stripe_payment_intent = models.CharField(max_length=255, null=True, blank=True)
+    stripe_checkout_session_id = models.CharField(max_length=255)
+    payment_status = models.CharField(max_length=15,choices=PAYMENT_STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Payment for Order {self.order.id} - Status: {self.payment_status}"

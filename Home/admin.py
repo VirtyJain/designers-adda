@@ -2,6 +2,4 @@ from django.contrib import admin
 from .models import CustomUser
 
 
-@admin.register(CustomUser)
-class CustomerAdmin(admin.ModelAdmin):
-    list_display=["username"]
+admin.site.register(CustomUser)
