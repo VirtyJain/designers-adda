@@ -10,5 +10,6 @@ urlpatterns = [
     path('order_product_info/<int:pk>/', views.OrderProductInfoView.as_view(), name='order_product_info'),
     path('payment_success', views.payment_success, name='payment_success'),
     path('payment_cancel', views.payment_cancel, name='payment_cancel'),
+    path('webhooks/stripe/', views.stripe_webhook, name='stripe_webhook'),
 
 ]

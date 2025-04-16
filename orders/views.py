@@ -4,11 +4,13 @@ import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.html import strip_tags
-from django.views import generic, View
+from django.views import View, generic
+from django.views.decorators.csrf import csrf_exempt
 
 from delivery_boy.models import DeliveryBoyModel
 from Home.views import LoginRequiredBaseView
@@ -49,7 +51,7 @@ def place_order(request, pk):
         pincode = request.POST.get('pincode')
 
         user = request.user
-        total_price = cart_item.product.product_price * quantity
+        total_price = (cart_item.product.product_price * quantity) + 50 # delivery charge 
 
         delivery_boys = list(DeliveryBoyModel.objects.all())
         delivery_boy = random.choice(delivery_boys) if delivery_boys else None
@@ -81,7 +83,7 @@ def place_order(request, pk):
                         },
                         'unit_amount': int(total_price * 100),
                     },
-                    'quantity': quantity,
+                    'quantity': 1,
                 },
             ],
             mode='payment',
@@ -94,58 +96,37 @@ def place_order(request, pk):
             stripe_payment_intent=checkout_session.payment_intent,
             stripe_checkout_session_id=checkout_session.id,
         )
-
+        
         return redirect(checkout_session.url)
 
     return render(request, 'orders/place_order.html', {'cart_item': cart_item})
 
-
-# to show order success page
-@login_required
-def order_success(request):
-    return render(request, 'orders/order_success.html')
-
-
-# to view order history
-@login_required
-def order_history(request, pk):
-    order_items = OrderModel.objects.filter(user=request.user)
-    return render(request, 'orders/orders.html', {'order_items': order_items, pk:pk})
-
-
-class OrderProductInfoView(LoginRequiredBaseView, generic.DetailView):
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
     
-    """
-    View to display ordered product details.
-    """
-    model = OrderModel
-    context_object_name = 'order_product'
-    template_name = 'orders/product_order_detail.html'
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, settings.STRIPE_WEBHOOK_SECRET)
+    except ValueError as e:
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        return HttpResponse(status=400)
 
-
-def payment_success(request):
-    
-    session_id = request.GET.get('session_id')
-    if not session_id:
-        return render(request, 'orders/payment_cancel.html')
-
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    session = stripe.checkout.Session.retrieve(session_id)
-    payment_intent = stripe.PaymentIntent.retrieve(session.payment_intent)
-    payment = get_object_or_404(PaymentModel, stripe_checkout_session_id=session_id)
-    
-    if session.payment_status == 'paid':
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        customer_email = session['customer_email']['email']
+        payment_intent = session['payment_intent']
+        
+        payment = PaymentModel.objects.get(stripe_payment_intent=payment_intent)
+        order = payment.order
+        
         payment.payment_status = 'Completed'
         payment.save()
-        payment.order.order_status = 'Processing'
-        payment.order.save()
+        order.order_status = 'Processing'
+        order.save()
 
-
-    if payment_intent.status == 'succeeded':
-        payment = PaymentModel.objects.get(stripe_checkout_session_id=session_id)
-        order = payment.order
-
-        # Now send emails like before
         user = order.user
         product = order.cart_product.product
         designer = product.designer.user
@@ -176,7 +157,7 @@ def payment_success(request):
         )
         plain_message = strip_tags(convert_to_html_content)
 
-        yo_send_it = send_mail(
+        send_mail(
             subject="Order Placed Successfully",
             message=plain_message,
             from_email=settings.EMAIL_HOST_USER,
@@ -194,7 +175,7 @@ def payment_success(request):
         )
         plain_message = strip_tags(convert_to_html_content)
 
-        yo_send_it = send_mail(
+        send_mail(
             subject="New Order Received",
             message=plain_message,
             from_email=settings.EMAIL_HOST_USER,
@@ -212,19 +193,45 @@ def payment_success(request):
         )
         plain_message = strip_tags(convert_to_html_content)
 
-        yo_send_it = send_mail(
+        send_mail(
             subject="New Order Received",
             message=plain_message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[receiver_email,],
             html_message=convert_to_html_content,
             fail_silently=True
-        )
+        )    
+        return render(request, 'orders/payment_success.html')
 
-        return render(request, 'orders/order_success.html', {"order": order})
+    return HttpResponse(status=200)
+
+
+# to show order success page
+@login_required
+def order_success(request):
+    return render(request, 'orders/order_success.html')
+
+
+# to view order history
+@login_required
+def order_history(request, pk):
+    order_items = OrderModel.objects.filter(user=request.user)
+    return render(request, 'orders/orders.html', {'order_items': order_items, pk:pk})
+
+
+class OrderProductInfoView(LoginRequiredBaseView, generic.DetailView):
     
-    return render(request, 'orders/payment_success.html')
+    """
+    View to display ordered product details.
+    """
+    model = OrderModel
+    context_object_name = 'order_product'
+    template_name = 'orders/product_order_detail.html'
 
+
+def payment_success(request):
+    return render(request, 'orders/payment_success.html')
+    
 
 def payment_cancel(request):
     return render(request, 'orders/payment_cancel.html')
