@@ -140,3 +140,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'designers.adda.21@gmail.com'
 EMAIL_HOST_PASSWORD = 'abgu irjz ovpd opgr'
+
+
+from decouple import config
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")

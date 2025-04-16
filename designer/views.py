@@ -7,6 +7,7 @@ from .models import DesignerRegister, DesignerBusinessDetails
 from Home.forms import CustomerChangeForm
 from products.models import ProductDetailsModel
 from products.forms import ProductDetailsForm
+from orders.models import OrderModel
 from Home.views import LoginRequiredBaseView
 # Create your views here.
 
@@ -20,9 +21,14 @@ def designers_home_view(request):
     designer = DesignerRegister.objects.get(user=request.user)  # Assuming a related Designer model
     designer_id = designer.id
     
+    orders = OrderModel.objects.filter(
+        cart_product__product__designer=designer
+    ).select_related('user', 'cart_product__product')
+
     return render(request, 'designer/designers_home.html', {
         'designer': designer,
         'designer_id': designer_id,
+        'orders': orders,
     })
 
 
@@ -43,7 +49,7 @@ class DesignerFormView(LoginRequiredBaseView, generic.FormView):
     def form_valid(self, form):
         user = self.request.user
 
-        user.user_type = 'designer'
+        user.user_type = 'Designer'
         user.save(update_fields=['user_type'])
         login(self.request, user)
         user.save()
@@ -52,6 +58,7 @@ class DesignerFormView(LoginRequiredBaseView, generic.FormView):
         designer = form.save(commit=False)
         designer.user = user
         designer.save()
+        
 
         # Redirect to business details form, pass designer.pk in session
         self.request.session['designer_id'] = designer.pk
@@ -207,3 +214,20 @@ class DesignerProductDeleteView(LoginRequiredBaseView, generic.DeleteView):
 
     def get_success_url(self):
         return reverse('designer_products', kwargs={'pk': self.object.designer.pk})
+
+
+class ViewDesignersOrder(LoginRequiredBaseView, generic.ListView):
+    
+    """
+    view to display designer's all orders.
+    """
+    
+    template_name = "designer/designers_home.html"
+    model = OrderModel
+    context_object_name = 'orders'
+    
+    def get_queryset(self):
+        designer_id = self.kwargs['pk']
+        return OrderModel.objects.filter(
+            cart_product__product__designer_id=designer_id
+        ).select_related('user', 'cart_product__product')
