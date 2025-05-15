@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Logout - Designer’s Adda</title>
+    <title>Order Cancelled - Designer’s Adda</title>
     <style>
         * {
             margin: 0;
@@ -15,8 +15,10 @@
         }
 
         body {
-            background-image : url('{% static 'images/coloured_background.jpg' %}');
+            background-image: url('{% static "images/coloured_background.jpg" %}');
             background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,45 +26,50 @@
         }
 
         .order-box {
-            background-color: white;
-            padding: 3rem 2rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 3rem 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
             text-align: center;
             max-width: 400px;
-            width: 100%;
+            width: 90%;
         }
 
         .order-box h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
             color: #00796b;
+            margin-bottom: 0.8rem;
         }
 
-        .order-box button {
-            padding: 0.8rem 2rem;
+        .order-box p {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 1.8rem;
+        }
+
+        .order-box a {
+            display: inline-block;
+            padding: 0.9rem 2rem;
             background-color: #00acc1;
             color: white;
-            border: none;
+            text-decoration: none;
             border-radius: 10px;
             font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1.5rem;
             transition: background 0.3s ease;
         }
 
-        .order-box button:hover {
+        .order-box a:hover {
             background-color: #0097a7;
         }
     </style>
 </head>
 
 <body>
-    <!-- Order confirm -->
     <div class="order-box">
         <h2>Payment Cancelled</h2>
-        <p>Try Again (If you want)</p>
+        <p>Try Again (If You Want)</p>
         <a href="/user/home/">Return to Home</a>
     </div>
 </body>
+
 </html>

@@ -36,6 +36,38 @@ def view_cart(request, pk):
     return render(request, 'orders/cart.html', {'cart_items': cart_items, pk:pk})
 
 
+def send_order_emails(order):
+    user = order.user
+    product = order.cart_product.product
+    designer = product.designer.user
+    delivery_boy = order.delivery_boy.user
+
+    context = {
+        "user_name": user.first_name,
+        "product_name": product.product_name,
+        "quantity": order.quantity,
+        "total_price": order.total_price,
+        "delivery_boy": delivery_boy.first_name,
+        "house_no": order.house_no,
+        "address": order.address,
+        "landmark": order.landmark,
+        "city": order.city,
+        "state": order.state,
+        "pincode": order.pincode,
+        "designer_name": f'{designer.first_name} {designer.last_name}',
+        "designer_contact": designer.contact_no,
+    }
+
+    def send(to_email, subject, template):
+        html_message = render_to_string(template, context)
+        plain_message = strip_tags(html_message)
+        send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to_email], html_message=html_message, fail_silently=True)
+
+    send(user.email, "Order Placed Successfully", "orders/customer_email.html")
+    send(designer.email, "New Order Received", "orders/designer_email.html")
+    send(delivery_boy.email, "New Order Received", "orders/delivery_boy_email.html")
+
+
 # to place order
 @login_required
 def place_order(request, pk):
@@ -69,6 +101,11 @@ def place_order(request, pk):
             state=state,
             pincode=pincode
         )
+        
+        order.order_status = 'Processing'
+        order.save()
+        
+        send_order_emails(order)
         
         stripe.api_key = settings.STRIPE_SECRET_KEY
         
@@ -116,91 +153,12 @@ def stripe_webhook(request):
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        customer_email = session['customer_email']['email']
         payment_intent = session['payment_intent']
         
-        payment = PaymentModel.objects.get(stripe_payment_intent=payment_intent)
-        order = payment.order
-        
+        payment = PaymentModel.objects.get(stripe_payment_intent=payment_intent)        
         payment.payment_status = 'Completed'
         payment.save()
-        order.order_status = 'Processing'
-        order.save()
-
-        user = order.user
-        product = order.cart_product.product
-        designer = product.designer.user
-        delivery_boy = order.delivery_boy.user
-
-        context = {
-            "user_name": user.first_name,
-            "product_name": product.product_name,
-            "quantity": order.quantity,
-            "total_price": order.total_price,
-            "delivery_boy": delivery_boy.first_name,
-            "house_no": order.house_no,
-            "address": order.address,
-            "landmark": order.landmark,
-            "city": order.city,
-            "state": order.state,
-            "pincode": order.pincode,
-            "designer_name": f'{designer.first_name} {designer.last_name}',
-            "designer_contact": designer.contact_no,
-        }
-
-        # Email to Customer
-        receiver_email = user.email
-        template_name = "orders/customer_email.html"
-        convert_to_html_content =  render_to_string(
-            template_name=template_name,
-            context=context
-        )
-        plain_message = strip_tags(convert_to_html_content)
-
-        send_mail(
-            subject="Order Placed Successfully",
-            message=plain_message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[receiver_email,],
-            html_message=convert_to_html_content,
-            fail_silently=True
-        )
-        
-        # Email to Designer
-        receiver_email = order.cart_item.product.designer.user.email
-        template_name = "orders/designer_email.html"
-        convert_to_html_content =  render_to_string(
-            template_name=template_name,
-            context=context
-        )
-        plain_message = strip_tags(convert_to_html_content)
-
-        send_mail(
-            subject="New Order Received",
-            message=plain_message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[receiver_email,],
-            html_message=convert_to_html_content,
-            fail_silently=True
-        )
-        
-        # Email to Delivery boy
-        receiver_email = delivery_boy.user.email
-        template_name = "orders/delivery_boy_email.html"
-        convert_to_html_content =  render_to_string(
-            template_name=template_name,
-            context=context
-        )
-        plain_message = strip_tags(convert_to_html_content)
-
-        send_mail(
-            subject="New Order Received",
-            message=plain_message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[receiver_email,],
-            html_message=convert_to_html_content,
-            fail_silently=True
-        )    
+   
         return render(request, 'orders/payment_success.html')
 
     return HttpResponse(status=200)

@@ -94,7 +94,7 @@
         <p>{{ order_product.cart_product.product.product_description }}</p>
         <p>Designed by <strong>{{ order_product.cart_product.product.designer.user.first_name }} {{ order_product.cart_product.product.designer.user.last_name }}</strong> ({{ order_product.cart_product.product.designer.bio }})</p>      
         <p><strong>Price:</strong>{{ order_product.cart_product.product.product_price }}</p>
-        <p>Address: {{ order_product.house_no }}, {{ order_product.address }},{{ order_product.city }},{{ order_product.state }},</p>
+        <p><strong>Delivery Address:</strong> {{ order_product.house_no }}, {{ order_product.address }},{{ order_product.city }},{{ order_product.state }},</p>
         <p>Landmark: {{ order_product.landmark }}</p>
         <p>Pincode: {{ order_product.pincode }}</p>
     </div>
